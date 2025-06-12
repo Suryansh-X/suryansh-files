@@ -1,199 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Suryansh Files</title>
   <style>
     body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Courier New', monospace;
-      background-color: #0d0d0d;
-      color: #00ffcc;
-      overflow-x: hidden;
-    }
-
-    h1 {
+      background: black;
+      color: cyan;
+      font-family: monospace;
       text-align: center;
-      margin: 20px 0;
-      color: #00ffe5;
-      font-size: 3em;
-      text-shadow: 0 0 20px #00ffe5, 0 0 40px #00ffff;
-      animation: glow 2s ease-in-out infinite alternate;
+      padding: 30px;
     }
-
-    @keyframes glow {
-      from {
-        text-shadow: 0 0 10px #00ffe5;
-      }
-      to {
-        text-shadow: 0 0 20px #00ffff, 0 0 30px #00ffee;
-      }
+    h1 {
+      font-size: 2.5em;
+      text-shadow: 0 0 10px cyan;
     }
-
     .file {
-      background-color: rgba(0, 255, 204, 0.07);
+      background: rgba(255,255,255,0.05);
       margin: 10px auto;
-      padding: 15px 20px;
-      width: 90%;
+      padding: 15px;
+      width: 80%;
       max-width: 600px;
-      border: 1px solid #00ffe5;
-      border-radius: 12px;
+      border: 1px solid cyan;
+      border-radius: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 10px;
-      animation: fadeIn 0.5s ease-in-out;
     }
-
-    .file a {
-      color: #00ffff;
+    a {
+      color: cyan;
       text-decoration: none;
-      font-weight: bold;
     }
-
-    .file a:hover {
-      text-decoration: underline;
-    }
-
-    .file .left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .file .icon {
-      font-size: 24px;
-    }
-
-    .copy-btn {
-      background-color: #111;
-      border: 1px solid #00ffcc;
+    button {
+      background: transparent;
+      color: cyan;
+      border: 1px solid cyan;
       padding: 5px 10px;
-      border-radius: 8px;
-      color: #00ffcc;
+      border-radius: 6px;
       cursor: pointer;
-      font-size: 0.9em;
-      transition: 0.3s ease;
     }
-
-    .copy-btn:hover {
-      background-color: #00ffcc;
-      color: #000;
-    }
-
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: -1;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    button:hover {
+      background: cyan;
+      color: black;
     }
   </style>
 </head>
 <body>
 
-  <!-- 🔊 Background Music -->
-  <audio autoplay loop>
-    <source src="https://files.catbox.moe/wbn8gc.mp3" type="audio/mpeg">
-  </audio>
+<h1>📁 Suryansh Files</h1>
 
-  <!-- 💻 Matrix BG -->
-  <canvas id="matrix"></canvas>
+<div class="file">
+  <a href="https://cdn.jsdelivr.net/gh/Suryansh-X/suryansh-files/files/25.05_G-12_CH-11%20_NOTES%20_PART-01.pdf" target="_blank">
+    25.05_G-12_CH-11_NOTES_PART-01.pdf
+  </a>
+  <button onclick="copyLink(this)">📋 Copy</button>
+</div>
 
-  <h1>💾 Suryansh Files</h1>
-
-  <div id="list">Loading files…</div>
-
-  <script>
-    async function loadFiles() {
-      const repo = "Suryansh-X/suryansh-files";
-      const folder = "files";
-      const apiUrl = `https://api.github.com/repos/${repo}/contents/${folder}`;
-
-      try {
-        const res = await fetch(apiUrl);
-        const files = await res.json();
-        const listDiv = document.getElementById("list");
-        listDiv.innerHTML = "";
-
-        files.forEach(file => {
-          const ext = file.name.split('.').pop().toLowerCase();
-          let icon = "📄";
-          if (ext === "pdf") icon = "📕";
-          else if (ext === "mp3") icon = "🎵";
-          else if (ext === "docx" || ext === "doc") icon = "📘";
-          else if (ext === "zip") icon = "🗜️";
-          else if (ext === "jpg" || ext === "png") icon = "🖼️";
-
-          const fileDiv = document.createElement("div");
-          fileDiv.className = "file";
-          fileDiv.innerHTML = `
-            <div class="left">
-              <span class="icon">${icon}</span>
-              <a href="${file.download_url}" target="_blank">${file.name}</a>
-            </div>
-            <button class="copy-btn" onclick="copyToClipboard('${file.download_url}', this)">📋 Copy</button>
-          `;
-          listDiv.appendChild(fileDiv);
-        });
-      } catch (err) {
-        console.error(err);
-        document.getElementById("list").innerText = "❌ Failed to load files.";
-      }
-    }
-
-    function copyToClipboard(url, btn) {
-      navigator.clipboard.writeText(url).then(() => {
-        btn.innerText = "✅ Copied";
-        setTimeout(() => btn.innerText = "📋 Copy", 2000);
-      });
-    }
-
-    loadFiles();
-  </script>
-
-  <script>
-    // Matrix animation
-    const canvas = document.getElementById("matrix");
-    const ctx = canvas.getContext("2d");
-
-    canvas.height = window.innerHeight;
-    canvas.width = window.innerWidth;
-
-    const letters = "01";
-    const fontSize = 16;
-    const columns = canvas.width / fontSize;
-    const drops = Array.from({ length: columns }).fill(1);
-
-    function draw() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.fillStyle = "#00ffcc";
-      ctx.font = fontSize + "px monospace";
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = letters[Math.floor(Math.random() * letters.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-        drops[i]++;
-      }
-    }
-
-    setInterval(draw, 50);
-    window.addEventListener('resize', () => {
-      canvas.height = window.innerHeight;
-      canvas.width = window.innerWidth;
-    });
-  </script>
+<script>
+  function copyLink(btn) {
+    const link = btn.previousElementSibling.href;
+    navigator.clipboard.writeText(link);
+    btn.innerText = "✅ Copied";
+    setTimeout(() => btn.innerText = "📋 Copy", 2000);
+  }
+</script>
 
 </body>
 </html>
