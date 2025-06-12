@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Upload to Suryansh Cloud</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Courier New', Courier, monospace;
+      background: #0d1117;
+      color: #f0f6fc;
+      padding: 2rem;
+      text-align: center;
+    }
+    h1 {
+      font-size: 2rem;
+      text-shadow: 0 0 5px #00ffcc;
+    }
+    input[type="file"] {
+      margin: 1rem 0;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      background-color: #238636;
+      border: none;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .message {
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>📤 Upload to Suryansh Cloud</h1>
+  <input type="file" id="fileInput" />
+  <br />
+  <button onclick="uploadFile()">Upload</button>
+  <div class="message" id="message"></div>
+
+  <script>
+    const supabase = supabase.createClient(
+      'https://zolkmdcvdoskwclhhbcx.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpvbGttZGN2ZG9za3djbGhoYmN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk2OTk5OTYsImV4cCI6MjA2NTI3NTk5Nn0.Dm9yMfE021vJ4a_BkgidonZlfX_i0qvtEDUgyNcla8k'
+    );
+
+    async function uploadFile() {
+      const fileInput = document.getElementById("fileInput");
+      const file = fileInput.files[0];
+      const message = document.getElementById("message");
+
+      if (!file) {
+        message.innerText = "Please select a file first.";
+        return;
+      }
+
+      const { data, error } = await supabase.storage
+        .from('files')
+        .upload(file.name, file, {
+          cacheControl: '3600',
+          upsert: true
+        });
+
+      if (error) {
+        message.innerText = "❌ Upload failed: " + error.message;
+      } else {
+        message.innerText = "✅ Upload successful: " + file.name;
+      }
+    }
+  </script>
+</body>
+</html>
