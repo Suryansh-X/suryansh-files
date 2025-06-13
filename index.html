@@ -1,69 +1,183 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Suryansh Files</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CoreSuryansh Files</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      background: black;
-      color: cyan;
-      font-family: monospace;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(270deg, #1a1a2e, #000000);
+      background-size: 400% 400%;
+      animation: gradientShift 12s ease infinite;
+      color: white;
+      overflow-x: hidden;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .hero {
       text-align: center;
-      padding: 30px;
+      padding: 6rem 1rem 3rem;
     }
-    h1 {
-      font-size: 2.5em;
-      text-shadow: 0 0 10px cyan;
+    .rainbow-glow {
+      font-size: 3.5rem;
+      font-weight: 700;
+      background: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: rainbowShift 4s linear infinite;
+      text-shadow: 0 0 30px rgba(255,255,255,0.1);
     }
-    .file {
-      background: rgba(255,255,255,0.05);
-      margin: 10px auto;
-      padding: 15px;
-      width: 80%;
+    @keyframes rainbowShift {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+    .subheading {
+      color: #ccc;
+      font-size: 1.25rem;
+      margin-top: 0.75rem;
+    }
+    .search-bar {
+      padding: 1rem;
+      width: 90%;
       max-width: 600px;
-      border: 1px solid cyan;
+      margin: 2.5rem auto 0;
+      display: block;
+      border: 2px solid #fff;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-size: 1.1rem;
+      backdrop-filter: blur(6px);
+      outline: none;
+      transition: 0.4s;
+    }
+    .search-bar:focus {
+      border-color: #00ffff;
+      box-shadow: 0 0 16px #00ffff;
+    }
+    .file-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+      padding: 3rem 2rem;
+    }
+    .file-card {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 1.8rem 1.2rem;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(0,255,255,0.2);
+      transition: all 0.4s ease;
+    }
+    .file-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 0 25px rgba(0,255,255,0.4);
+    }
+    .file-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    .file-name {
+      font-size: 1.1rem;
+      margin-bottom: 1.2rem;
+      color: #f0f0f0;
+      word-wrap: break-word;
+    }
+    .file-meta {
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      color: #aaa;
+    }
+    .download-btn {
+      background: #00ffff;
+      color: #000;
+      padding: 0.6rem 1.2rem;
       border-radius: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    a {
-      color: cyan;
+      font-weight: 600;
       text-decoration: none;
+      transition: 0.3s ease-in-out;
+      display: inline-block;
     }
-    button {
-      background: transparent;
-      color: cyan;
-      border: 1px solid cyan;
-      padding: 5px 10px;
-      border-radius: 6px;
-      cursor: pointer;
+    .download-btn:hover {
+      background: #00cccc;
     }
-    button:hover {
-      background: cyan;
-      color: black;
+    .leaf {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: url('https://upload.wikimedia.org/wikipedia/commons/8/8b/Maple_Leaf_SVG.svg') no-repeat center/contain;
+      animation: fall 10s linear infinite;
+    }
+    @keyframes fall {
+      0% { transform: translateY(-100px) rotate(0); }
+      100% { transform: translateY(100vh) rotate(360deg); }
     }
   </style>
 </head>
 <body>
+  <audio autoplay loop hidden>
+    <source src="https://github.com/Suryansh-X/suryansh-files/raw/main/files/bg.mp3" type="audio/mpeg">
+  </audio>  <div class="hero">
+    <h1 class="rainbow-glow">CoreSuryansh Files</h1>
+    <p class="subheading">Secure • Stylish • Instant Access</p>
+    <input type="text" id="searchInput" class="search-bar" placeholder="Search PDF files..." />
+  </div>  <div id="fileContainer" class="file-container"></div>  <script>
+    for (let i = 0; i < 15; i++) {
+      const leaf = document.createElement('div');
+      leaf.className = 'leaf';
+      leaf.style.left = Math.random() * 100 + 'vw';
+      leaf.style.animationDuration = (8 + Math.random() * 5) + 's';
+      document.body.appendChild(leaf);
+    }
 
-<h1>📁 Suryansh Files</h1>
+    async function fetchFiles() {
+      const repo = 'Suryansh-X/suryansh-files';
+      const folder = 'files';
+      const url = `https://api.github.com/repos/${repo}/contents/${folder}`;
 
-<div class="file">
-  <a href="https://cdn.jsdelivr.net/gh/Suryansh-X/suryansh-files/files/25.05_G-12_CH-11%20_NOTES%20_PART-01.pdf" target="_blank">
-    25.05_G-12_CH-11_NOTES_PART-01.pdf
-  </a>
-  <button onclick="copyLink(this)">📋 Copy</button>
-</div>
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        const container = document.getElementById('fileContainer');
 
-<script>
-  function copyLink(btn) {
-    const link = btn.previousElementSibling.href;
-    navigator.clipboard.writeText(link);
-    btn.innerText = "✅ Copied";
-    setTimeout(() => btn.innerText = "📋 Copy", 2000);
-  }
-</script>
+        data.forEach(file => {
+          if (file.type === 'file' && file.name.endsWith('.pdf')) {
+            const card = document.createElement('div');
+            card.className = 'file-card';
 
-</body>
+            const sizeKB = (file.size / 1024).toFixed(1);
+
+            card.innerHTML = `
+              <div class="file-icon">📄</div>
+              <div class="file-name">${file.name}</div>
+              <div class="file-meta">Size: ${sizeKB} KB</div>
+              <a href="${file.download_url}" class="download-btn" download>Download</a>
+            `;
+            container.appendChild(card);
+          }
+        });
+      } catch (err) {
+        console.error('Failed to load files:', err);
+        document.getElementById('fileContainer').innerHTML = '<p>❌ Failed to load files.</p>';
+      }
+    }
+
+    document.getElementById('searchInput').addEventListener('input', function(e) {
+      const keyword = e.target.value.toLowerCase();
+      const cards = document.querySelectorAll('.file-card');
+      cards.forEach(card => {
+        const name = card.querySelector('.file-name').textContent.toLowerCase();
+        card.style.display = name.includes(keyword) ? 'block' : 'none';
+      });
+    });
+
+    fetchFiles();
+  </script></body>
 </html>
