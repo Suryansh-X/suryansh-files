@@ -1,183 +1,154 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CoreSuryansh Files</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Suryansh — File Vault</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(270deg, #1a1a2e, #000000);
-      background-size: 400% 400%;
-      animation: gradientShift 12s ease infinite;
-      color: white;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      min-height: 100vh;
       overflow-x: hidden;
+      color: white;
     }
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-    .hero {
+    h1 {
       text-align: center;
-      padding: 6rem 1rem 3rem;
-    }
-    .rainbow-glow {
-      font-size: 3.5rem;
-      font-weight: 700;
-      background: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet);
-      background-size: 300% 300%;
+      font-size: 3rem;
+      padding: 30px 0;
+      background: linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      animation: rainbowShift 4s linear infinite;
-      text-shadow: 0 0 30px rgba(255,255,255,0.1);
+      animation: glow 2s linear infinite;
     }
-    @keyframes rainbowShift {
-      0% { background-position: 0% 50%; }
-      100% { background-position: 100% 50%; }
+    @keyframes glow {
+      0% { filter: drop-shadow(0 0 5px #fff); }
+      50% { filter: drop-shadow(0 0 20px #0ff); }
+      100% { filter: drop-shadow(0 0 5px #fff); }
     }
-    .subheading {
-      color: #ccc;
-      font-size: 1.25rem;
-      margin-top: 0.75rem;
-    }
-    .search-bar {
-      padding: 1rem;
-      width: 90%;
-      max-width: 600px;
-      margin: 2.5rem auto 0;
-      display: block;
-      border: 2px solid #fff;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.1);
-      color: white;
-      font-size: 1.1rem;
-      backdrop-filter: blur(6px);
-      outline: none;
-      transition: 0.4s;
-    }
-    .search-bar:focus {
-      border-color: #00ffff;
-      box-shadow: 0 0 16px #00ffff;
-    }
-    .file-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 2rem;
-      padding: 3rem 2rem;
+    #file-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      padding: 20px;
     }
     .file-card {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255,255,255,0.2);
       border-radius: 20px;
-      padding: 1.8rem 1.2rem;
-      text-align: center;
-      box-shadow: 0 0 20px rgba(0,255,255,0.2);
-      transition: all 0.4s ease;
+      padding: 20px;
+      width: 200px;
+      backdrop-filter: blur(5px);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
     .file-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 0 25px rgba(0,255,255,0.4);
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(255,255,255,0.3);
     }
-    .file-icon {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-    }
-    .file-name {
-      font-size: 1.1rem;
-      margin-bottom: 1.2rem;
-      color: #f0f0f0;
-      word-wrap: break-word;
-    }
-    .file-meta {
-      font-size: 0.9rem;
-      margin-bottom: 1rem;
-      color: #aaa;
-    }
-    .download-btn {
-      background: #00ffff;
-      color: #000;
-      padding: 0.6rem 1.2rem;
-      border-radius: 10px;
-      font-weight: 600;
+    .file-card a {
+      color: #0ff;
       text-decoration: none;
-      transition: 0.3s ease-in-out;
-      display: inline-block;
+      word-wrap: break-word;
+      font-weight: bold;
     }
-    .download-btn:hover {
-      background: #00cccc;
-    }
+
+    /* Falling leaves animation */
     .leaf {
       position: absolute;
-      width: 20px;
-      height: 20px;
-      background: url('https://upload.wikimedia.org/wikipedia/commons/8/8b/Maple_Leaf_SVG.svg') no-repeat center/contain;
+      top: -50px;
+      width: 30px;
+      height: 30px;
+      background-image: url('https://pngimg.com/uploads/autumn_leaves/autumn_leaves_PNG3614.png');
+      background-size: cover;
       animation: fall 10s linear infinite;
     }
+
     @keyframes fall {
-      0% { transform: translateY(-100px) rotate(0); }
-      100% { transform: translateY(100vh) rotate(360deg); }
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* Music button */
+    #music-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(0,0,0,0.6);
+      padding: 10px 15px;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <audio autoplay loop hidden>
-    <source src="https://github.com/Suryansh-X/suryansh-files/raw/main/files/bg.mp3" type="audio/mpeg">
-  </audio>  <div class="hero">
-    <h1 class="rainbow-glow">CoreSuryansh Files</h1>
-    <p class="subheading">Secure • Stylish • Instant Access</p>
-    <input type="text" id="searchInput" class="search-bar" placeholder="Search PDF files..." />
-  </div>  <div id="fileContainer" class="file-container"></div>  <script>
-    for (let i = 0; i < 15; i++) {
+
+  <h1>Suryansh 🔥 File Vault</h1>
+  <div id="file-list">Loading files...</div>
+
+  <div id="music-btn">🔊 Music</div>
+  <audio id="bg-music" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2023/04/25/audio_5f99dfae64.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Falling leaves -->
+  <script>
+    for (let i = 0; i < 10; i++) {
       const leaf = document.createElement('div');
       leaf.className = 'leaf';
-      leaf.style.left = Math.random() * 100 + 'vw';
-      leaf.style.animationDuration = (8 + Math.random() * 5) + 's';
+      leaf.style.left = Math.random() * 100 + "vw";
+      leaf.style.animationDelay = Math.random() * 5 + "s";
       document.body.appendChild(leaf);
     }
+  </script>
 
-    async function fetchFiles() {
-      const repo = 'Suryansh-X/suryansh-files';
-      const folder = 'files';
-      const url = `https://api.github.com/repos/${repo}/contents/${folder}`;
+  <script>
+    const username = "suryansh-x";
+    const repo = "suryansh-files";
 
-      try {
-        const res = await fetch(url);
-        const data = await res.json();
-        const container = document.getElementById('fileContainer');
-
+    fetch(`https://api.github.com/repos/${username}/${repo}/contents/`)
+      .then(res => res.json())
+      .then(data => {
+        let output = "";
         data.forEach(file => {
-          if (file.type === 'file' && file.name.endsWith('.pdf')) {
-            const card = document.createElement('div');
-            card.className = 'file-card';
-
-            const sizeKB = (file.size / 1024).toFixed(1);
-
-            card.innerHTML = `
-              <div class="file-icon">📄</div>
-              <div class="file-name">${file.name}</div>
-              <div class="file-meta">Size: ${sizeKB} KB</div>
-              <a href="${file.download_url}" class="download-btn" download>Download</a>
+          if (file.type === "file") {
+            output += `
+              <div class="file-card">
+                <a href="${file.download_url}" target="_blank">${file.name}</a>
+              </div>
             `;
-            container.appendChild(card);
           }
         });
-      } catch (err) {
-        console.error('Failed to load files:', err);
-        document.getElementById('fileContainer').innerHTML = '<p>❌ Failed to load files.</p>';
-      }
-    }
-
-    document.getElementById('searchInput').addEventListener('input', function(e) {
-      const keyword = e.target.value.toLowerCase();
-      const cards = document.querySelectorAll('.file-card');
-      cards.forEach(card => {
-        const name = card.querySelector('.file-name').textContent.toLowerCase();
-        card.style.display = name.includes(keyword) ? 'block' : 'none';
+        document.getElementById("file-list").innerHTML = output || "No files found.";
+      })
+      .catch(err => {
+        console.error("GitHub API Error:", err);
+        document.getElementById("file-list").innerHTML = `<div style="text-align:center;">⚠️ Could not load files.</div>`;
       });
-    });
 
-    fetchFiles();
-  </script></body>
+    // Background music control
+    const music = document.getElementById("bg-music");
+    const btn = document.getElementById("music-btn");
+    let playing = false;
+    btn.addEventListener("click", () => {
+      if (!playing) {
+        music.play();
+        btn.innerText = "⏸️ Pause";
+      } else {
+        music.pause();
+        btn.innerText = "🔊 Music";
+      }
+      playing = !playing;
+    });
+  </script>
+
+</body>
 </html>
