@@ -16,61 +16,61 @@
       color: #fff;
       min-height: 100vh;
       overflow-x: hidden;
+      padding: 30px 10px;
       position: relative;
       z-index: 0;
     }
 
-    /* Background Video */
-    video.bg-video {
+    .bg-video {
       position: fixed;
       top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
+      width: 100%; height: 100%;
       object-fit: cover;
       z-index: -2;
-      filter: brightness(0.3);
+      opacity: 0.35;
+      animation: fadeIn 2s ease-in-out;
     }
 
-    /* Fading Animation Overlay */
-    body::after {
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 0.35; }
+    }
+
+    body::before {
       content: "";
       position: fixed;
-      top: 0; left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(-45deg, #1a1a2e88, #16213e88, #1f406888, #4facfe88, #b78df888);
-      background-size: 400% 400%;
-      animation: fadeBG 15s ease-in-out infinite;
+      pointer-events: none;
+      background-image: radial-gradient(#ffffff0f 1px, transparent 1px);
+      background-size: 20px 20px;
+      animation: moveSparkles 60s linear infinite;
       z-index: -1;
     }
 
-    @keyframes fadeBG {
-      0%, 100% { opacity: 0.4; }
-      50% { opacity: 0.8; }
+    @keyframes moveSparkles {
+      0% { background-position: 0 0; }
+      100% { background-position: 100px 100px; }
     }
 
-    .container {
-      padding: 30px 15px;
-    }
-
-    /* Typing Title */
     .title {
-      font-size: 3rem;
+      font-size: 2.5rem;
       text-align: center;
+      margin-bottom: 20px;
       background: linear-gradient(to right, #4facfe, #00f2fe);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      animation: typing 4s steps(20, end), blink 0.75s step-end infinite;
       white-space: nowrap;
       overflow: hidden;
-      border-right: 3px solid rgba(255,255,255,0.75);
-      width: 0;
-      animation: typing 5s steps(30, end) forwards, blink 0.7s step-end infinite;
-      margin-bottom: 30px;
+      border-right: 2px solid #00f2fe;
+      width: 20ch;
+      margin: 0 auto 30px;
     }
 
     @keyframes typing {
       from { width: 0; }
-      to { width: 100%; }
+      to { width: 20ch; }
     }
 
     @keyframes blink {
@@ -89,7 +89,6 @@
       background: rgba(255, 255, 255, 0.05);
       backdrop-filter: blur(10px);
       color: white;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
       display: block;
     }
 
@@ -103,7 +102,7 @@
     .card {
       width: 180px;
       border-radius: 16px;
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(255, 255, 255, 0.05);
       backdrop-filter: blur(10px);
       padding: 18px;
       text-align: center;
@@ -119,7 +118,7 @@
       font-size: 1rem;
       color: #e0e0e0;
       margin-bottom: 6px;
-      word-wrap: break-word;
+      word-break: break-all;
     }
 
     .meta {
@@ -159,24 +158,54 @@
       left: 100%;
     }
 
+    .paper-bird {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      background: url('https://upload.wikimedia.org/wikipedia/commons/e/e1/Paper-crane.svg') no-repeat center/contain;
+      animation: fall 12s linear infinite;
+      opacity: 0.6;
+      z-index: 0;
+    }
+
+    .paper-bird:nth-child(1) { left: 5%; animation-delay: 0s; }
+    .paper-bird:nth-child(2) { left: 25%; animation-delay: 3s; }
+    .paper-bird:nth-child(3) { left: 45%; animation-delay: 6s; }
+    .paper-bird:nth-child(4) { left: 65%; animation-delay: 9s; }
+    .paper-bird:nth-child(5) { left: 85%; animation-delay: 12s; }
+
+    @keyframes fall {
+      0% { transform: translateY(-10%) rotate(0deg); }
+      100% { transform: translateY(110vh) rotate(360deg); }
+    }
+
     @media (max-width: 600px) {
-      .title { font-size: 2rem; }
+      .title { font-size: 1.8rem; }
       .card { width: 90%; }
       .search-box { width: 90%; }
     }
   </style>
 </head>
 <body>
-  <!-- Video Background -->
+
+  <!-- Background Video -->
   <video class="bg-video" src="bg.mp4" autoplay loop muted playsinline></video>
 
-  <div class="container">
-    <h1 class="title">CoreSuryansh Files</h1>
-    <input class="search-box" type="text" placeholder="Search files..." oninput="searchFiles(this.value)" />
-    <div class="card-container" id="file-list">
-      <!-- File cards will appear here -->
-    </div>
+  <!-- Typing Title -->
+  <h1 class="title">CoreSuryansh Files</h1>
+
+  <input class="search-box" type="text" placeholder="Search files..." oninput="searchFiles(this.value)"/>
+
+  <div class="card-container" id="file-list">
+    <!-- Files will be loaded from GitHub -->
   </div>
+
+  <!-- Paper Birds -->
+  <div class="paper-bird"></div>
+  <div class="paper-bird"></div>
+  <div class="paper-bird"></div>
+  <div class="paper-bird"></div>
+  <div class="paper-bird"></div>
 
   <script>
     const REPO_OWNER = "suryansh-x";
@@ -190,7 +219,6 @@
         const res = await fetch(API_URL);
         const files = await res.json();
         if (!Array.isArray(files)) return;
-
         allFiles = files;
         displayFiles(files);
       } catch (err) {
@@ -209,7 +237,6 @@
         const fileName = file.name;
         const fileSize = (file.size / 1024).toFixed(1) + " KB";
         const fileType = file.name.split(".").pop().toLowerCase();
-
         let typeClass = "blue";
         if (fileType === "pdf") typeClass = "red";
         else if (["docx", "doc"].includes(fileType)) typeClass = "purple";
@@ -234,5 +261,6 @@
 
     fetchFiles();
   </script>
+
 </body>
 </html>
