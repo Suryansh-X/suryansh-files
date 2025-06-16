@@ -11,40 +11,70 @@
       box-sizing: border-box;
     }
 
-    body, html {
-      height: 100%;
+    body {
       font-family: 'Orbitron', sans-serif;
       color: #fff;
+      min-height: 100vh;
       overflow-x: hidden;
       position: relative;
+      z-index: 0;
     }
 
-    /* 🎥 Video Background */
-    #bg-video {
+    /* Background Video */
+    video.bg-video {
       position: fixed;
       top: 0; left: 0;
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
       object-fit: cover;
       z-index: -2;
+      filter: brightness(0.3);
     }
 
-    .overlay {
+    /* Fading Animation Overlay */
+    body::after {
+      content: "";
       position: fixed;
       top: 0; left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.6);
+      background: linear-gradient(-45deg, #1a1a2e88, #16213e88, #1f406888, #4facfe88, #b78df888);
+      background-size: 400% 400%;
+      animation: fadeBG 15s ease-in-out infinite;
       z-index: -1;
     }
 
+    @keyframes fadeBG {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.8; }
+    }
+
+    .container {
+      padding: 30px 15px;
+    }
+
+    /* Typing Title */
     .title {
       font-size: 3rem;
       text-align: center;
       background: linear-gradient(to right, #4facfe, #00f2fe);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin: 40px 10px 30px;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 3px solid rgba(255,255,255,0.75);
+      width: 0;
+      animation: typing 5s steps(30, end) forwards, blink 0.7s step-end infinite;
+      margin-bottom: 30px;
+    }
+
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+
+    @keyframes blink {
+      50% { border-color: transparent; }
     }
 
     .search-box {
@@ -68,7 +98,6 @@
       flex-wrap: wrap;
       justify-content: center;
       gap: 20px;
-      padding-bottom: 50px;
     }
 
     .card {
@@ -90,6 +119,7 @@
       font-size: 1rem;
       color: #e0e0e0;
       margin-bottom: 6px;
+      word-wrap: break-word;
     }
 
     .meta {
@@ -137,21 +167,15 @@
   </style>
 </head>
 <body>
+  <!-- Video Background -->
+  <video class="bg-video" src="bg.mp4" autoplay loop muted playsinline></video>
 
-  <!-- 🔥 Background Video (no green, dark aesthetic) -->
-  <video id="bg-video" autoplay muted loop playsinline>
-    <source src="https://assets.mixkit.co/videos/preview/mixkit-stars-in-space-1610-large.mp4" type="video/mp4" />
-    Your browser does not support HTML5 video.
-  </video>
-
-  <div class="overlay"></div>
-
-  <h1 class="title">CoreSuryansh Files</h1>
-
-  <input class="search-box" type="text" placeholder="Search files..." oninput="searchFiles(this.value)"/>
-
-  <div class="card-container" id="file-list">
-    <!-- Files from GitHub will load here -->
+  <div class="container">
+    <h1 class="title">CoreSuryansh Files</h1>
+    <input class="search-box" type="text" placeholder="Search files..." oninput="searchFiles(this.value)" />
+    <div class="card-container" id="file-list">
+      <!-- File cards will appear here -->
+    </div>
   </div>
 
   <script>
@@ -182,11 +206,9 @@
       }
 
       files.forEach(file => {
-        if (!file.download_url || !file.name) return;
-
-        const fileName = decodeURIComponent(file.name);
-        const fileSize = file.size ? (file.size / 1024).toFixed(1) + " KB" : "Unknown size";
-        const fileType = fileName.includes(".") ? fileName.split(".").pop().toLowerCase() : "File";
+        const fileName = file.name;
+        const fileSize = (file.size / 1024).toFixed(1) + " KB";
+        const fileType = file.name.split(".").pop().toLowerCase();
 
         let typeClass = "blue";
         if (fileType === "pdf") typeClass = "red";
@@ -212,6 +234,5 @@
 
     fetchFiles();
   </script>
-
 </body>
 </html>
