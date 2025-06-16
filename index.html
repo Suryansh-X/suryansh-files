@@ -2,123 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Suryansh Files</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: #111;
-      color: white;
-      overflow-x: hidden;
-    }
-
-    header {
-      text-align: center;
-      padding: 2rem 1rem;
-      font-size: 2rem;
-      background: linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet);
-      background-size: 400% 400%;
-      animation: rainbow 8s linear infinite;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    @keyframes rainbow {
-      0% { background-position: 0% 50%; }
-      100% { background-position: 100% 50%; }
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 1rem;
-      margin: 1rem;
-      border-radius: 1rem;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-      transition: transform 0.3s;
-    }
-
-    .card:hover {
-      transform: scale(1.03);
-    }
-
-    #file-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1rem;
-      padding: 1rem;
-    }
-
-    /* Colorful Paper Birds Animation */
-    .bird {
-      position: fixed;
-      top: -50px;
-      width: 30px;
-      height: 30px;
-      background: url('https://i.ibb.co/N9BtM28/bird.png') no-repeat center/contain;
-      animation: flyDown 10s linear infinite;
-      z-index: 0;
-    }
-
-    @keyframes flyDown {
-      0% {
-        transform: translateY(-100px) translateX(0) rotate(0deg);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(100vh) translateX(200px) rotate(720deg);
-        opacity: 0;
-      }
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Suryansh</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <audio autoplay loop>
-    <source src="John Cena - The Time Is Now (Entrance Theme).mp3" type="audio/mpeg" />
+
+  <!-- 🔊 Background Music -->
+  <audio autoplay loop hidden>
+    <source src="music.mp3" type="audio/mpeg" />
   </audio>
 
-  <header>Suryansh — Shining Through Knowledge ✨</header>
-  <div id="file-list">Loading files...</div>
+  <div class="container">
+    <h1 class="glow">Suryansh</h1>
+    <p class="tagline">Shining Through Knowledge — Auto Powered</p>
+    <div id="file-list">Loading files...</div>
+  </div>
 
-  <!-- Paper Birds Generator -->
-  <script>
-    for (let i = 0; i < 15; i++) {
-      const bird = document.createElement("div");
-      bird.classList.add("bird");
-      bird.style.left = Math.random() * window.innerWidth + "px";
-      bird.style.animationDelay = (Math.random() * 10) + "s";
-      bird.style.opacity = Math.random();
-      document.body.appendChild(bird);
-    }
-  </script>
+  <footer>
+    <p>📸 Instagram: <a href="https://instagram.com/shxrmx_z" target="_blank">@shxrmx_z</a></p>
+    <p>🌐 GitHub: <a href="https://suryansh-x.github.io/Suryansh-files" target="_blank">Suryansh-files</a></p>
+  </footer>
 
-  <!-- GitHub Files Fetch -->
-  <script>
-    const username = "suryansh-x";
-    const repo = "suryansh-files";
-
-    async function fetchFiles() {
-      const res = await fetch(`https://api.github.com/repos/${suryansh-x}/${suyansh-files}/contents`);
-      const data = await res.json();
-
-      const fileList = document.getElementById("file-list");
-      fileList.innerHTML = "";
-
-      data.forEach(file => {
-        if (file.type === "file") {
-          const card = document.createElement("div");
-          card.className = "card";
-          card.innerHTML = `
-            <h3>${file.name}</h3>
-            <a href="${file.download_url}" target="_blank" style="color: cyan;">Download</a>
-          `;
-          fileList.appendChild(card);
-        }
-      });
-    }
-
-    fetchFiles();
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
