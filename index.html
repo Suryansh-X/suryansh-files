@@ -3,27 +3,253 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Suryansh</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>CoreSuryansh Files</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0; padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Orbitron', sans-serif;
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+      padding: 30px 10px;
+      z-index: 0;
+    }
+
+    /* Moving Background */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(-45deg, #1a1a2e, #16213e, #1f4068, #4facfe, #b78df8, #1a1a2e);
+      background-size: 400% 400%;
+      animation: moveBG 30s ease infinite;
+      z-index: -1;
+      opacity: 0.35;
+      filter: blur(2px);
+    }
+
+    @keyframes moveBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .title {
+      font-size: 3rem;
+      text-align: center;
+      background: linear-gradient(to right, #4facfe, #00f2fe);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 30px;
+    }
+
+    .search-box {
+      padding: 14px 22px;
+      border-radius: 12px;
+      border: none;
+      outline: none;
+      width: 90%;
+      max-width: 480px;
+      font-size: 1rem;
+      margin: 0 auto 40px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      color: white;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      display: block;
+    }
+
+    .card-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .card {
+      width: 180px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(10px);
+      padding: 18px;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 8px 24px rgba(255, 255, 255, 0.08);
+    }
+
+    .file-name {
+      font-size: 1rem;
+      color: #e0e0e0;
+      margin-bottom: 6px;
+    }
+
+    .meta {
+      font-size: 0.85rem;
+      color: #b0b0b0;
+      margin-bottom: 12px;
+    }
+
+    .card.blue { border: 2px solid #4facfe; }
+    .card.purple { border: 2px solid #b78df8; }
+    .card.red { border: 2px solid #f85a5a; }
+
+    .card button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      background: linear-gradient(to right, #667eea, #764ba2);
+      color: white;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card button::after {
+      content: "";
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255,255,255,0.1);
+      transition: 0.3s;
+    }
+
+    .card button:hover::after {
+      left: 100%;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      background-image: radial-gradient(#ffffff0f 1px, transparent 1px);
+      background-size: 20px 20px;
+      animation: moveSparkles 60s linear infinite;
+      z-index: 1;
+    }
+
+    @keyframes moveSparkles {
+      0% { background-position: 0 0; }
+      100% { background-position: 100px 100px; }
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-10%) rotate(0deg); }
+      100% { transform: translateY(110vh) rotate(360deg); }
+    }
+
+    .paper-bird {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      background: url('https://upload.wikimedia.org/wikipedia/commons/e/e1/Paper-crane.svg') no-repeat center/contain;
+      animation: fall 12s linear infinite;
+      opacity: 0.6;
+      z-index: 0;
+    }
+
+    .paper-bird:nth-child(1) { left: 5%; animation-delay: 0s; }
+    .paper-bird:nth-child(2) { left: 25%; animation-delay: 3s; }
+    .paper-bird:nth-child(3) { left: 45%; animation-delay: 6s; }
+    .paper-bird:nth-child(4) { left: 65%; animation-delay: 9s; }
+    .paper-bird:nth-child(5) { left: 85%; animation-delay: 12s; }
+
+    @media (max-width: 600px) {
+      .title { font-size: 2rem; }
+      .card { width: 90%; }
+      .search-box { width: 90%; }
+    }
+  </style>
 </head>
 <body>
 
-  <!-- 🔊 Background Music -->
-  <audio autoplay loop hidden>
-    <source src="music.mp3" type="audio/mpeg" />
-  </audio>
+  <h1 class="title">CoreSuryansh Files</h1>
 
-  <div class="container">
-    <h1 class="glow">Suryansh</h1>
-    <p class="tagline">Shining Through Knowledge — Auto Powered</p>
-    <div id="file-list">Loading files...</div>
+  <input class="search-box" type="text" placeholder="Search files..." oninput="searchFiles(this.value)"/>
+
+  <div class="card-container" id="file-list">
+    <!-- Files will be loaded from GitHub -->
   </div>
 
-  <footer>
-    <p>📸 Instagram: <a href="https://instagram.com/shxrmx_z" target="_blank">@shxrmx_z</a></p>
-    <p>🌐 GitHub: <a href="https://suryansh-x.github.io/Suryansh-files" target="_blank">Suryansh-files</a></p>
-  </footer>
+  <!-- Paper Birds -->
+  <div class="paper-bird"></div>
+  <div class="paper-bird"></div>
+  <div class="paper-bird"></div>
+  <div class="paper-bird"></div>
+  <div class="paper-bird"></div>
 
-  <script src="script.js"></script>
+  <script>
+    const REPO_OWNER = "suryansh-x";
+    const REPO_NAME = "suryansh-files";
+    const API_URL = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/`;
+    const fileList = document.getElementById("file-list");
+    let allFiles = [];
+
+    async function fetchFiles() {
+      try {
+        const res = await fetch(API_URL);
+        const files = await res.json();
+        if (!Array.isArray(files)) return;
+
+        allFiles = files;
+        displayFiles(files);
+      } catch (err) {
+        console.error("Error fetching files:", err);
+      }
+    }
+
+    function displayFiles(files) {
+      fileList.innerHTML = "";
+      if (files.length === 0) {
+        fileList.innerHTML = "<div class='file-name'>No files uploaded yet.</div>";
+        return;
+      }
+
+      files.forEach(file => {
+        const fileName = file.name;
+        const fileSize = (file.size / 1024).toFixed(1) + " KB";
+        const fileType = file.name.split(".").pop().toLowerCase();
+
+        let typeClass = "blue";
+        if (fileType === "pdf") typeClass = "red";
+        else if (["docx", "doc"].includes(fileType)) typeClass = "purple";
+
+        const card = document.createElement("div");
+        card.className = `card ${typeClass}`;
+        card.innerHTML = `
+          <div class="file-name">${fileName}</div>
+          <div class="meta">${fileSize} • ${fileType.toUpperCase()}</div>
+          <a href="${file.download_url}" download>
+            <button>Download</button>
+          </a>
+        `;
+        fileList.appendChild(card);
+      });
+    }
+
+    function searchFiles(keyword) {
+      const filtered = allFiles.filter(f => f.name.toLowerCase().includes(keyword.toLowerCase()));
+      displayFiles(filtered);
+    }
+
+    fetchFiles();
+  </script>
+
 </body>
 </html>
