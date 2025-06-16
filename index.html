@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>CoreSuryansh Files</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
@@ -16,61 +16,48 @@
       color: #fff;
       min-height: 100vh;
       overflow-x: hidden;
-      padding: 30px 10px;
       position: relative;
+      padding: 30px 10px;
       z-index: 0;
     }
 
-    .bg-video {
+    video.bg-video {
       position: fixed;
       top: 0; left: 0;
-      width: 100%; height: 100%;
+      width: 100vw;
+      height: 100vh;
       object-fit: cover;
       z-index: -2;
-      opacity: 0.35;
-      animation: fadeIn 2s ease-in-out;
+      opacity: 1;
     }
 
-    @keyframes fadeIn {
-      0% { opacity: 0; }
-      100% { opacity: 0.35; }
-    }
-
-    body::before {
+    body::after {
       content: "";
       position: fixed;
+      top: 0; left: 0;
       width: 100%;
       height: 100%;
-      pointer-events: none;
-      background-image: radial-gradient(#ffffff0f 1px, transparent 1px);
-      background-size: 20px 20px;
-      animation: moveSparkles 60s linear infinite;
+      background: none;
       z-index: -1;
     }
 
-    @keyframes moveSparkles {
-      0% { background-position: 0 0; }
-      100% { background-position: 100px 100px; }
-    }
-
     .title {
-      font-size: 2.5rem;
+      font-size: 2.8rem;
       text-align: center;
-      margin-bottom: 20px;
-      background: linear-gradient(to right, #4facfe, #00f2fe);
+      margin-bottom: 30px;
+      background: linear-gradient(to right, #4facfe, #b78df8);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      animation: typing 4s steps(20, end), blink 0.75s step-end infinite;
       white-space: nowrap;
       overflow: hidden;
-      border-right: 2px solid #00f2fe;
-      width: 20ch;
-      margin: 0 auto 30px;
+      border-right: 3px solid rgba(255,255,255,0.7);
+      width: 18ch;
+      animation: typing 3.5s steps(18), blink 0.6s step-end infinite alternate;
     }
 
     @keyframes typing {
-      from { width: 0; }
-      to { width: 20ch; }
+      from { width: 0 }
+      to { width: 18ch }
     }
 
     @keyframes blink {
@@ -86,8 +73,7 @@
       max-width: 480px;
       font-size: 1rem;
       margin: 0 auto 40px;
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.1);
       color: white;
       display: block;
     }
@@ -102,8 +88,7 @@
     .card {
       width: 180px;
       border-radius: 16px;
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.06);
       padding: 18px;
       text-align: center;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -111,7 +96,7 @@
 
     .card:hover {
       transform: translateY(-6px);
-      box-shadow: 0 8px 24px rgba(255, 255, 255, 0.08);
+      box-shadow: 0 8px 24px rgba(255, 255, 255, 0.1);
     }
 
     .file-name {
@@ -168,19 +153,19 @@
       z-index: 0;
     }
 
+    @keyframes fall {
+      0% { transform: translateY(-10%) rotate(0deg); }
+      100% { transform: translateY(110vh) rotate(360deg); }
+    }
+
     .paper-bird:nth-child(1) { left: 5%; animation-delay: 0s; }
     .paper-bird:nth-child(2) { left: 25%; animation-delay: 3s; }
     .paper-bird:nth-child(3) { left: 45%; animation-delay: 6s; }
     .paper-bird:nth-child(4) { left: 65%; animation-delay: 9s; }
     .paper-bird:nth-child(5) { left: 85%; animation-delay: 12s; }
 
-    @keyframes fall {
-      0% { transform: translateY(-10%) rotate(0deg); }
-      100% { transform: translateY(110vh) rotate(360deg); }
-    }
-
     @media (max-width: 600px) {
-      .title { font-size: 1.8rem; }
+      .title { font-size: 2rem; }
       .card { width: 90%; }
       .search-box { width: 90%; }
     }
@@ -188,25 +173,28 @@
 </head>
 <body>
 
-  <!-- Background Video -->
-  <video class="bg-video" src="bg.mp4" autoplay loop muted playsinline></video>
+  <!-- 🔥 Video Background -->
+  <video class="bg-video" autoplay muted loop playsinline>
+    <source src="bg.mp4" type="video/mp4">
+  </video>
 
-  <!-- Typing Title -->
+  <!-- 🖋️ Typing Title -->
   <h1 class="title">CoreSuryansh Files</h1>
 
+  <!-- 🔎 Search -->
   <input class="search-box" type="text" placeholder="Search files..." oninput="searchFiles(this.value)"/>
 
-  <div class="card-container" id="file-list">
-    <!-- Files will be loaded from GitHub -->
-  </div>
+  <!-- 📁 Cards -->
+  <div class="card-container" id="file-list"></div>
 
-  <!-- Paper Birds -->
+  <!-- 🕊️ Paper Birds -->
   <div class="paper-bird"></div>
   <div class="paper-bird"></div>
   <div class="paper-bird"></div>
   <div class="paper-bird"></div>
   <div class="paper-bird"></div>
 
+  <!-- 🧠 JavaScript: GitHub File Fetch -->
   <script>
     const REPO_OWNER = "suryansh-x";
     const REPO_NAME = "suryansh-files";
@@ -237,6 +225,7 @@
         const fileName = file.name;
         const fileSize = (file.size / 1024).toFixed(1) + " KB";
         const fileType = file.name.split(".").pop().toLowerCase();
+
         let typeClass = "blue";
         if (fileType === "pdf") typeClass = "red";
         else if (["docx", "doc"].includes(fileType)) typeClass = "purple";
